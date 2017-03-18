@@ -62,4 +62,49 @@ New-NetFirewallRule -DisplayName “Docker Swarm 7946 TCP” -Direction Inbound 
 New-NetFirewallRule -DisplayName “Docker Swarm 7946 UDP” -Direction Inbound –Protocol UDP –LocalPort 7946 -Action allow
 New-NetFirewallRule -DisplayName “Docker Swarm 4789 UDP” -Direction Inbound –Protocol UDP –LocalPort 4789 -Action allow
 
-3.  
+3.  Let's actually start up a swarm!
+
+On the linux headnode, using the IP address from Step 1:
+
+docker swarm init --advertise-addr 10.44.241.214
+
+The output to this command should look like:
+
+Swarm initialized: current node (dxn1zf6l61qsb1josjja83ngz) is now a manager.
+
+To add a worker to this swarm, run the following command:
+
+    docker swarm join \
+    --token SWMTKN-1-49nj1cmql0jkz5s954yi3oex3nedyz0fb0xx14ie39trti4wxv-8vxv8rssmk743ojnwacrr2e7c \
+    10.44.241.214:2377
+
+To add a manager to this swarm, run 'docker swarm join-token manager' and follow the instructions.
+
+Please copy the provided worker join command, in this case:
+    
+	docker swarm join \
+    --token SWMTKN-1-49nj1cmql0jkz5s954yi3oex3nedyz0fb0xx14ie39trti4wxv-8vxv8rssmk743ojnwacrr2e7c \
+    10.44.241.214:2377
+	
+	
+4. Let's add our windows machine into the cluster.
+In a powershell, let's go ahead and run that command above...
+
+	docker swarm join \
+    --token SWMTKN-1-49nj1cmql0jkz5s954yi3oex3nedyz0fb0xx14ie39trti4wxv-8vxv8rssmk743ojnwacrr2e7c \
+    10.44.241.214:2377
+	
+	
+Please run 
+
+docker node ls
+
+To ensure that you can see the two nodes.  If you can, then we can move on!
+
+5. Let's deploy our stack to the swarm!  Run the following command on the headnode.
+
+docker stack deploy --compose-file docker-stack.yml milkyway-stack
+
+At this point, you should be able to check on the running stack by
+
+docker stack ps
