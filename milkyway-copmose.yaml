@@ -1,0 +1,106 @@
+version: "3"
+
+services:
+  milkyway-galaxy:
+    image: wbarshop/milkyway_galaxy
+    volumes:
+      - galaxy_storage:/export/
+    ports:
+      - "80:80"
+      - "21:21"
+      - "8800:8800"
+      - "9002:9002"
+    networks:
+		milkynet:
+			aliases:
+				- milkyway-galaxy
+		external
+			aliases:
+				- milkyway-galaxy
+	environment:
+		- GALAXY_CONFIG_ADMIN_USERS=admin@galaxy.org
+		- GALAXY_CONFIG_MASTER_API_KEY=37430b18a3e4610ea243c316b293d06f
+		- GALAXY_CONFIG_REQUIRE_LOGIN=True
+		- GALAXY_CONFIG_HOST='0.0.0.0'
+		- GALAXY_DESTINATIONS_DEFAULT=local
+		- GALAXY_LOGGING=full
+		- GALAXY_DOCKER_ENABLED=True
+		- NONUSE=slurmd,slurmctld
+    deploy:
+      placement:
+        constraints: [node.role == manager]
+      restart_policy:
+        condition: on-failure
+        delay: 30s
+        max_attempts: 6
+        window: 240s
+      # service update configuration
+      update_config:
+        parallelism: 1
+        delay: 10s
+        failure_action: continue
+        monitor: 60s
+        max_failure_ratio: 0.3
+
+  milkyway-pulsar:
+    image: wbarshop/milkyway_pulsar
+
+    networks:
+		milkynet:
+			aliases:
+				- milkyway-pulsar
+    deploy:
+      placement:
+        constraints: [constraint:operatingsystem==Windows Server 2016]
+      restart_policy:
+        condition: on-failure
+        delay: 30s
+        max_attempts: 6
+        window: 240s
+      # service update configuration
+      update_config:
+        parallelism: 1
+        delay: 10s
+        failure_action: continue
+        monitor: 60s
+        max_failure_ratio: 0.3
+		
+#  milkyway_shinyproxy:
+#    image: wbarshop/milkyway_shinyproxy
+#    ports:
+#      - 8080:80
+#    networks:
+#		milkynet:
+#			aliases:
+#				-milkyway_shinyproxy
+#		external:
+#			aliases:
+#				-milkyway_shinyproxy
+#    deploy:
+#      placement:
+#        constraints: [node.role == worker]
+#      restart_policy:
+#        condition: on-failure
+#        delay: 30s
+#        max_attempts: 6
+#        window: 240s
+#      # service update configuration
+#      update_config:
+#        parallelism: 1
+#        delay: 10s
+#        failure_action: continue
+#        monitor: 60s
+#        max_failure_ratio: 0.3
+
+networks:
+    milkynet:
+		driver: overlay
+	external:
+		driver: bridge
+
+volumes:
+	galaxy_storage:
+		driver:local
+		driver_opts:
+			type: nfs
+			
