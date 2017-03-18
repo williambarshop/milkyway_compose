@@ -6,7 +6,7 @@ swarm startup script
 ON LINUX TO MAKE HEAD NODE:
 
 
-#Configuration of Docker Swarm (initial setup)
+# Configuration of Docker Swarm (initial setup)
 Note: This setup describes a simple scenario of ONE Linux machine (galaxy headnode) and ONE Windows Server (Pulsar node)
 Both machines require Docker 1.13 or newer.
 
