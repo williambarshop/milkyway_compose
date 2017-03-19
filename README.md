@@ -101,7 +101,20 @@ docker node ls
 
 To ensure that you can see the two nodes.  If you can, then we can move on!
 
-5. Let's deploy our stack to the swarm!  Run the following command on the headnode.
+5. Let's label our windows node so that we can target pulsar to run on it and not try to launch on the linux machine!
+
+[wbarshop@headnode milkyway_compose]$ sudo docker node ls
+ID                           HOSTNAME      STATUS  AVAILABILITY  MANAGER STATUS
+l16if3ukud4p943yfbgdrvp3j *  headnode      Ready   Active        Leader
+twk3gjotsweus3h7m9dvz0hrw    jwohl-pulsar  Ready   Active
+
+Grab the hostname for the windows server, and label it with ostype=windows as below...
+
+[wbarshop@headnode milkyway_compose]$ sudo docker node update --label-add ostype=windows jwohl-pulsar
+jwohl-pulsar
+
+
+6. Let's deploy our stack to the swarm!  Run the following command on the headnode.
 
 docker stack deploy --compose-file docker-stack.yml milkyway-stack
 
