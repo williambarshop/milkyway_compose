@@ -1,7 +1,7 @@
 # milkyway_compose
 Docker compose for MilkyWay.  This is intended for setup onto a simple cluster with BOTH a Linux and Windows host machine.
 
-##**Requirements:**
+## **Requirements:**
 - Two virtualization capable machine installations (virtual or physical).
   * Make sure that if either machine is a virtual machine, it is capable of running a nested hypervisor
 - One must be running Linux
