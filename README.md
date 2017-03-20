@@ -20,7 +20,7 @@ Both machines require Docker 1.13 or newer.
 docker0: flags=4099<UP,BROADCAST,MULTICAST>  mtu 1500
         inet 172.17.0.1  netmask 255.255.0.0  broadcast 0.0.0.0
         inet6 fe80::42:ff:fee0:e21f  prefixlen 64  scopeid 0x20<link>
-        ether 02:42:00:e0:e2:1f  txqueuelen 0  (Ethernet)
+        ether ff:ff:ff:ff:ff:ff  txqueuelen 0  (Ethernet)
         RX packets 852461  bytes 48626430 (46.3 MiB)
         RX errors 0  dropped 0  overruns 0  frame 0
         TX packets 5638075  bytes 8389152513 (7.8 GiB)
@@ -29,7 +29,7 @@ docker0: flags=4099<UP,BROADCAST,MULTICAST>  mtu 1500
 eth0: flags=4163<UP,BROADCAST,RUNNING,MULTICAST>  mtu 1500
         inet 10.44.241.214  netmask 255.255.255.0  broadcast 10.44.241.255
         inet6 fe80::2329:6bbd:9ac6:d1d8  prefixlen 64  scopeid 0x20<link>
-        ether 00:15:5d:f1:80:0d  txqueuelen 1000  (Ethernet)
+        ether ff:ff:ff:ff:ff:ff  txqueuelen 1000  (Ethernet)
         RX packets 53014210  bytes 60122224312 (55.9 GiB)
         RX errors 0  dropped 3115  overruns 0  frame 0
         TX packets 8171362  bytes 6372676527 (5.9 GiB)
@@ -44,8 +44,9 @@ lo: flags=73<UP,LOOPBACK,RUNNING>  mtu 65536
         TX packets 171212511  bytes 54638983317 (50.8 GiB)
         TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
 ```
-------------------------------------------------------------------------	
+
 For example, here I would want '10.44.241.214'
+You should be looking to get the IP address on the network that is shared between the computers you are making nodes on the docker swarm we will be assembling.
 
 
 ### 2.  Open ports TCP 2377, TCP/UDP 7946 and UDP 4789 on the headnode and each node
