@@ -116,9 +116,9 @@ To ensure that you can see the two nodes.  If you can, then we can move on!
 ID                           HOSTNAME      STATUS  AVAILABILITY  MANAGER STATUS
 l16if3ukud4p943yfbgdrvp3j *  headnode      Ready   Active        Leader
 twk3gjotsweus3h7m9dvz0hrw    jwohl-pulsar  Ready   Active
-
+```
 Grab the hostname for the windows server, and label it with ostype=windows as below...
-
+```
 [wbarshop@headnode milkyway_compose]$ sudo docker node update --label-add ostype=windows jwohl-pulsar
 jwohl-pulsar
 ```
