@@ -70,8 +70,8 @@ services:
   milkyway-shinyproxy:
     image: wbarshop/milkyway_shinyproxy
     ports:
-      - 8080:8080
-      - 2375:2375
+      - "8080:8080"
+      - "2375:2375"
     networks:
         milkynet:
             aliases:
@@ -80,6 +80,7 @@ services:
 #            aliases:
 #                -milkyway_shinyproxy
     deploy:
+      privileged: true
       placement:
         constraints: [node.labels.ostype != windows]
       restart_policy:
@@ -94,7 +95,6 @@ services:
         failure_action: continue
         monitor: 60s
         max_failure_ratio: 0.3
-    privileged: true
 
 networks:
     milkynet:
