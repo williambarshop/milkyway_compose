@@ -28,7 +28,8 @@ services:
         - NONUSE=slurmd,slurmctld
     deploy:
       placement:
-        constraints: [node.role == manager]
+        constraints: [node.labels.ostype != windows]
+#        constraints: [node.role == manager]
       restart_policy:
         condition: on-failure
         delay: 30s
@@ -51,8 +52,8 @@ services:
                 - milkyway-pulsar
     deploy:
       placement:
-        constraints:
-            - operatingsystem==windows
+        constraints: [node.labels.ostype == windows]
+#            - engine.labels.operatingsystem==windows
       restart_policy:
         condition: on-failure
         delay: 30s
@@ -66,32 +67,34 @@ services:
         monitor: 60s
         max_failure_ratio: 0.3
         
-#  milkyway_shinyproxy:
-#    image: wbarshop/milkyway_shinyproxy
-#    ports:
-#      - 8080:80
-#    networks:
-#        milkynet:
-#            aliases:
-#                -milkyway_shinyproxy
+  milkyway-shinyproxy:
+    image: wbarshop/milkyway_shinyproxy
+    ports:
+      - 8080:8080
+      - 2375:2375
+    networks:
+        milkynet:
+            aliases:
+                - milkyway-shinyproxy
 #        external:
 #            aliases:
 #                -milkyway_shinyproxy
-#    deploy:
-#      placement:
-#        constraints: [node.role == worker]
-#      restart_policy:
-#        condition: on-failure
-#        delay: 30s
-#        max_attempts: 6
-#        window: 240s
-#      # service update configuration
-#      update_config:
-#        parallelism: 1
-#        delay: 10s
-#        failure_action: continue
-#        monitor: 60s
-#        max_failure_ratio: 0.3
+    deploy:
+      placement:
+        constraints: [node.labels.ostype != windows]
+      restart_policy:
+        condition: on-failure
+        delay: 30s
+        max_attempts: 6
+        window: 240s
+      # service update configuration
+      update_config:
+        parallelism: 1
+        delay: 10s
+        failure_action: continue
+        monitor: 60s
+        max_failure_ratio: 0.3
+    privileged: true
 
 networks:
     milkynet:
@@ -106,3 +109,8 @@ volumes:
 #        driver_opts:
 #            type: nfs
 #        - galaxy_storage/:/export/           
+
+
+
+#        constraints: [node.labels.ostype == windows]
+
