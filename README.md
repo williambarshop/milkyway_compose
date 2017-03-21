@@ -96,12 +96,10 @@ Please copy the provided worker join command, in this case:
     10.44.241.214:2377
 ```	
 	
-### 4. Let's add our windows machine into the cluster.
-In a powershell, let's go ahead and run that command above...
+### 4. Let's add our windows machine (and any other machines) into the swarm.
+In a powershell, let's go ahead and run that command above... (windows will want this in a single line).
 ```
-	docker swarm join \
-    --token SWMTKN-1-49nj1cmql0jkz5s954yi3oex3nedyz0fb0xx14ie39trti4wxv-8vxv8rssmk743ojnwacrr2e7c \
-    10.44.241.214:2377
+docker swarm join --token SWMTKN-1-49nj1cmql0jkz5s954yi3oex3nedyz0fb0xx14ie39trti4wxv-8vxv8rssmk743ojnwacrr2e7c 10.44.241.214:2377
 ```	
 	
 Please run 
