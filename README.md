@@ -2,11 +2,11 @@
 Docker compose for MilkyWay.  This is intended for setup onto a simple cluster with BOTH a Linux and Windows host machine.
 
 ## **Requirements:**
-- Two virtualization capable machine installations (virtual or physical).
-  * Make sure that if either machine is a virtual machine, it is capable of running a nested hypervisor
-- One must be running Linux
-- One must be running Windows 10 Pro with the Creators Update
-- Both must have Docker installed (>= version 1.13)
+- Two virtualization capable environments (virtual or physical).
+  * Make sure that if either environment is a virtual machine, it is capable of running a nested hypervisor.
+- At least one must be running Linux
+- At least one must be running Windows 10 Pro with the Creators Update
+- All nodes must have Docker installed (>= version 1.13-- we have tested with 1.17)
 
 
 
@@ -14,7 +14,7 @@ Docker compose for MilkyWay.  This is intended for setup onto a simple cluster w
 Note: This setup describes a simple scenario of ONE Linux machine (galaxy headnode) and ONE Windows Server (Pulsar node)
 Both machines require Docker 1.13 or newer.
 
-### 1. Run 'ifconfig' to get your headnode (linux box) IP address
+### 1. Run `ifconfig` to get your headnode (linux box) IP address
 ```
 [wbarshop@headnode milkyway_compose]$ ifconfig
 docker0: flags=4099<UP,BROADCAST,MULTICAST>  mtu 1500
@@ -45,7 +45,7 @@ lo: flags=73<UP,LOOPBACK,RUNNING>  mtu 65536
         TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
 ```
 
-For example, here I would want '10.44.241.214'
+For example, here I would want `10.44.241.214`
 You should be looking to get the IP address on the network that is shared between the computers you are making nodes on the docker swarm we will be assembling.
 
 
@@ -110,7 +110,8 @@ docker node ls
 ```
 To ensure that you can see the two nodes.  If you can, then we can move on!
 
-### 5. Let's label our windows node so that we can target pulsar to run on it and not try to launch on the linux machine!
+### 5. Let's label our nodes OS types
+Doing this is necessary so that we can target pulsar to run on Windows, and not have Docker try to launch on it on the linux machine!
 ```
 [wbarshop@headnode milkyway_compose]$ sudo docker node ls
 ID                           HOSTNAME      STATUS  AVAILABILITY  MANAGER STATUS
@@ -120,7 +121,12 @@ twk3gjotsweus3h7m9dvz0hrw    jwohl-pulsar  Ready   Active
 Grab the hostname for the windows server, and label it with ostype=windows as below...
 ```
 [wbarshop@headnode milkyway_compose]$ sudo docker node update --label-add ostype=windows jwohl-pulsar
-jwohl-pulsar
+```
+It should return `jwohl-pulsar` if successful.
+
+Do the same for each linux server, and label it with ostype=linux as below... (you can use unix or whatever else, as long as != windows)
+```
+[wbarshop@headnode milkyway_compose]$ sudo docker node update --label-add ostype=linux headnode
 ```
 
 ### 6. Let's deploy our stack to the swarm!  Run the following command on the headnode.
