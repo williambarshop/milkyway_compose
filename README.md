@@ -122,7 +122,7 @@ Grab the hostname for the windows server, and label it with ostype=windows as be
 ```
 [wbarshop@headnode milkyway_compose]$ sudo docker node update --label-add ostype=windows jwohl-pulsar
 ```
-It should return `jwohl-pulsar` if successful.
+It should return `jwohl-pulsar` (Or the name of your node) if successful.
 
 Do the same for each linux server, and label it with ostype=linux as below... (you can use unix or whatever else, as long as != windows)
 ```
