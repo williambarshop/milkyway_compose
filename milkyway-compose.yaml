@@ -67,20 +67,18 @@ services:
         monitor: 60s
         max_failure_ratio: 0.3
         
-  milkyway-shinyproxy:
-    image: wbarshop/milkyway_shinyproxy
+  milkyway-shiny:
+    image: wbarshop/milkyway_shiny
     ports:
-      - "8080:8080"
-      - "2375:2375"
+      - "3838:3838"
     networks:
         milkynet:
             aliases:
-                - milkyway-shinyproxy
+                - milkyway-shiny
 #        external:
 #            aliases:
 #                -milkyway_shinyproxy
     deploy:
-      privileged: true
       placement:
         constraints: [node.labels.ostype != windows]
       restart_policy:
@@ -95,6 +93,35 @@ services:
         failure_action: continue
         monitor: 60s
         max_failure_ratio: 0.3
+
+#  milkyway-shinyproxy:
+#    image: wbarshop/milkyway_shinyproxy
+#    ports:
+#      - "8080:8080"
+#      - "2375:2375"
+#    networks:
+#        milkynet:
+#            aliases:
+#                - milkyway-shinyproxy
+##        external:
+##            aliases:
+##                -milkyway_shinyproxy
+#    deploy:
+#      privileged: true
+#      placement:
+#        constraints: [node.labels.ostype != windows]
+#      restart_policy:
+#        condition: on-failure
+#        delay: 30s
+#        max_attempts: 6
+#        window: 240s
+#      # service update configuration
+#      update_config:
+#        parallelism: 1
+#        delay: 10s
+#        failure_action: continue
+#        monitor: 60s
+#        max_failure_ratio: 0.3
 
 networks:
     milkynet:
