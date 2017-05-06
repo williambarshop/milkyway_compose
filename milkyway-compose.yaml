@@ -128,8 +128,10 @@ services:
 networks:
     milkynet:
         driver: overlay
-        config:
-            - subnet: 172.16.238.0/24
+        ipam:
+            driver: default
+            config:
+                - subnet: 172.16.238.0/24
 #    external:
 #        driver: bridge
 
