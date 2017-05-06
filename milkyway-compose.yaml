@@ -2,7 +2,7 @@ version: "3"
 
 services:
   milkyway-galaxy:
-    image: wbarshop/milkyway_galaxy
+    image: wbarshop/milkyway_galaxy:latest
     volumes:
       - galaxy_storage:/export/
     ports:
@@ -94,6 +94,8 @@ services:
         monitor: 60s
         max_failure_ratio: 0.3
 
+
+##### NOTE: Unfortunately, shinyproxy docker-in-docker won't work on swarm.  Docker-in-docker requires privileged session, which isn't supported on swarm.  But... you can still run it separately, if you want!
 #  milkyway-shinyproxy:
 #    image: wbarshop/milkyway_shinyproxy
 #    ports:
