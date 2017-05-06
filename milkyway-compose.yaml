@@ -131,7 +131,7 @@ networks:
         ipam:
             driver: default
             config:
-                - subnet: 192.168.0.0/16
+                - subnet: 172.16.254.0/24
 
 #    external:
 #        driver: bridge
