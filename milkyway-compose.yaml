@@ -1,4 +1,4 @@
-version: "3"
+version: "3.1"
 
 services:
   milkyway-galaxy:
@@ -128,10 +128,11 @@ services:
 networks:
     milkynet:
         driver: overlay
-        ipam:
-            driver: default
-            config:
-                - subnet: 172.16.254.0/24
+        internal: true
+#        ipam:
+#            driver: default
+#            config:
+#                - subnet: 172.16.254.0/24
 
 #    external:
 #        driver: bridge
