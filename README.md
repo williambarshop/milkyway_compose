@@ -49,11 +49,13 @@ For example, here I would want `10.44.241.214`
 You should be looking to get the IP address on the network that is shared between the computers you are making nodes on the docker swarm we will be assembling.
 
 
-### 2.  Open ports TCP 2377, TCP/UDP 7946 and UDP 4789 on the headnode and each node
-You may need to open port 50 if you set your docker overlay network to be encrypted.
+### 2.  Open ports TCP 50, TCP 2377, TCP/UDP 7946 and UDP 4789 on the headnode and each node
+You may need to open port 50 if you set your docker overlay network to be encrypted.  For ease of use, port 50 is included in our deployment.
+
 
 On our CentOS 7.x server, this can be done with the following commands:
 ```
+sudo firewall-cmd --zone=public --add-port=50/tcp --permanent
 sudo firewall-cmd --zone=public --add-port=2377/tcp --permanent
 sudo firewall-cmd --zone=public --add-port=7946/tcp --permanent
 sudo firewall-cmd --zone=public --add-port=7946/udp --permanent
@@ -61,8 +63,18 @@ sudo firewall-cmd --zone=public --add-port=4789/udp --permanent
 sudo firewall-cmd --reload
 ```
 
-On our Windows 10 Professional machine, we can do this in a powershell:
+On our Ubuntu 16.04 machine, this can be done with the following commands:
 ```
+sudo ufw allow 50/tcp
+sudo ufw allow 2377/tcp
+sudo ufw allow 7946/tcp
+sudo ufw allow 7946/udp
+sudo ufw allow 4789/udp
+```
+
+On our Windows 10 Professional or Windows Server 2016 machines, we can do this in a powershell:
+```
+New-NetFirewallRule -DisplayName “Docker Swarm 50” -Direction Inbound –Protocol TCP –LocalPort 50 -Action allow
 New-NetFirewallRule -DisplayName “Docker Swarm 2377” -Direction Inbound –Protocol TCP –LocalPort 2377 -Action allow
 New-NetFirewallRule -DisplayName “Docker Swarm 7946 TCP” -Direction Inbound –Protocol TCP –LocalPort 7946 -Action allow
 New-NetFirewallRule -DisplayName “Docker Swarm 7946 UDP” -Direction Inbound –Protocol UDP –LocalPort 7946 -Action allow
