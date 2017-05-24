@@ -1,6 +1,39 @@
 version: "3.1"
 
 services:
+  milkyway-smb:
+    image: brispark/smb:latest
+    volumes:
+      - smb_storage:/home/app
+#    expose:
+#      - "137"
+#      - "138"
+#      - "139"
+#      - "445"
+    networks:
+        milkynet:
+            aliases:
+                - milkyway-smb
+#        external:
+#            aliases:
+#                - milkyway-smb
+
+    deploy:
+      placement:
+        constraints: [node.labels.ostype != windows]
+      restart_policy:
+        condition: on-failure
+        delay: 30s
+        max_attempts: 6
+        window: 240s
+      # service update configuration
+      update_config:
+        parallelism: 1
+        delay: 10s
+        failure_action: continue
+        monitor: 60s
+        max_failure_ratio: 0.3
+
   milkyway-galaxy:
     image: wbarshop/milkyway_galaxy:latest
     volumes:
@@ -42,10 +75,12 @@ services:
         failure_action: continue
         monitor: 60s
         max_failure_ratio: 0.3
+  
 
   milkyway-pulsar:
     image: wbarshop/milkyway_pulsar
-
+#    volumes:
+#     - pulsar_storage:C:\pulsar\files\staging\
     networks:
         milkynet:
             aliases:
@@ -138,12 +173,14 @@ networks:
 #        driver: bridge
 
 volumes:
+    smb_storage:
     galaxy_storage:
 #    galaxy_storage:
 #        driver:local
 #        driver_opts:
 #            type: nfs
 #        - galaxy_storage/:/export/           
+#    pulsar_storage:
 
 
 
