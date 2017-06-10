@@ -5,7 +5,7 @@ Docker compose for MilkyWay.  This is intended for setup onto a simple cluster w
 - Two virtualization capable environments (virtual or physical).
   * Make sure that if either environment is a virtual machine, it is capable of running a nested hypervisor.
 - At least one must be running Linux
-- At least one must be running Windows 10 Pro with the Creators Update
+- At least one must be running Windows 10 Pro with the Creators Update (or Windows Server 2016 with current updates)
 - All nodes must have Docker installed (>= version 1.13-- we have tested with 1.17)
 
 
