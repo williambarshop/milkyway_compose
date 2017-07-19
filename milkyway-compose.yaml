@@ -45,7 +45,7 @@ services:
   
 
   milkyway-pulsar:
-    image: wbarshop/milkyway_pulsar:dev
+    image: wbarshop/milkyway_pulsar:latest
 #    volumes:
 #     - pulsar_storage:C:\pulsar\files\staging\
     networks:
