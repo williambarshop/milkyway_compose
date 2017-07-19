@@ -169,7 +169,7 @@ networks:
 
 volumes:
     galaxy_storage:
-    smb_storage:
+#    smb_storage:
 #    galaxy_storage:
 #        driver:local
 #        driver_opts:
