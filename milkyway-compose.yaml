@@ -95,35 +95,35 @@ services:
         max_failure_ratio: 0.3
 
 
-  milkyway-smb:
-    image: brispark/smb:latest
-    ports:
-      - "137:137"
-      - "138:138"
-      - "139:139"
-      - "445:445"
-    volumes:
-      - smb_storage:/home/app
-    networks:
-        milkynet:
-            aliases:
-                - milkyway-smb
+#  milkyway-smb:
+#    image: brispark/smb:latest
+#    ports:
+#      - "137:137"
+#      - "138:138"
+#      - "139:139"
+#      - "445:445"
+#    volumes:
+#      - smb_storage:/home/app
+#    networks:
+#        milkynet:
+#            aliases:
+#                - milkyway-smb
 
-    deploy:
-      placement:
-        constraints: [node.labels.ostype != windows]
-      restart_policy:
-        condition: on-failure
-        delay: 30s
-        max_attempts: 6
-        window: 240s
-      # service update configuration
-      update_config:
-        parallelism: 1
-        delay: 10s
-        failure_action: continue
-        monitor: 60s
-        max_failure_ratio: 0.3
+#    deploy:
+#      placement:
+#        constraints: [node.labels.ostype != windows]
+#      restart_policy:
+#        condition: on-failure
+#        delay: 30s
+#        max_attempts: 6
+#        window: 240s
+#      # service update configuration
+#      update_config:
+#        parallelism: 1
+#        delay: 10s
+#        failure_action: continue
+#        monitor: 60s
+#        max_failure_ratio: 0.3
 
 
 ##### NOTE: Unfortunately, shinyproxy docker-in-docker won't work on swarm.  Docker-in-docker requires privileged session, which isn't supported on swarm.  But... you can still run it separately, if you want!
@@ -168,7 +168,7 @@ networks:
 
 volumes:
     galaxy_storage:
-    smb_storage:
+#    smb_storage:
 #    galaxy_storage:
 #        driver:local
 #        driver_opts:
