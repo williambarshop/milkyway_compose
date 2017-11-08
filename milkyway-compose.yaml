@@ -45,7 +45,7 @@ services:
   
 
   milkyway-pulsar:
-    image: wbarshop/milkyway_pulsar:latest
+    image: wbarshop/milkyway_pulsar:NumCores
 #    volumes:
 #     - pulsar_storage:C:\pulsar\files\staging\
     networks:
@@ -160,7 +160,7 @@ networks:
         ipam:
             driver: default
             config:
-                - subnet: 172.16.254.0/24
+                - subnet: 172.28.0.0/16
 #        internal: true
 
 #    external:

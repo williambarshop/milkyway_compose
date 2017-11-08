@@ -4,7 +4,7 @@
 #sh docker_clone_volume.sh milkyway-stack_galaxy_storage milkyway-stack_galaxy_storage-old
 sudo docker stack rm milkyway-stack
 sleep 30
-sudo cp /var/lib/docker/volumes/milkyway-stack_galaxy_storage/ /var/lib/docker/volumes/milkyway-stack_galaxy_storage_old
+sudo mv /var/lib/docker/volumes/milkyway-stack_galaxy_storage/ /var/lib/docker/volumes/milkyway-stack_galaxy_storage_old/
 sudo docker volume rm milkyway-stack_galaxy_storage
 sh deploy_stack.sh
 sleep 120
