@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# MilkyWay Proteomics Documentation documentation build configuration file, created by
+# MilkyWay Proteomics documentation build configuration file, created by
 # sphinx-quickstart on Wed Nov  8 15:59:51 2017.
 #
 # This file is execfile()d with the current directory set to its
@@ -46,7 +46,7 @@ source_suffix = '.rst'
 master_doc = 'index'
 
 # General information about the project.
-project = u'MilkyWay Proteomics Documentation'
+project = u'MilkyWay Proteomics'
 copyright = u'2017, William D. Barshop, Hee Jong Kim, James A. Wohlschlegel'
 author = u'William D. Barshop, Hee Jong Kim, James A. Wohlschlegel'
 
@@ -115,7 +115,7 @@ html_static_path = ['_static']
 # -- Options for HTMLHelp output ------------------------------------------
 
 # Output file base name for HTML help builder.
-htmlhelp_basename = 'MilkyWayProteomicsDocumentationdoc'
+htmlhelp_basename = 'MilkyWayProteomicsdoc'
 
 
 # -- Options for LaTeX output ---------------------------------------------
@@ -142,7 +142,7 @@ latex_elements = {
 # (source start file, target name, title,
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
-    (master_doc, 'MilkyWayProteomicsDocumentation.tex', u'MilkyWay Proteomics Documentation Documentation',
+    (master_doc, 'MilkyWayProteomics.tex', u'MilkyWay Proteomics Documentation',
      u'William D. Barshop, Hee Jong Kim, James A. Wohlschlegel', 'manual'),
 ]
 
@@ -152,7 +152,7 @@ latex_documents = [
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
 man_pages = [
-    (master_doc, 'milkywayproteomicsdocumentation', u'MilkyWay Proteomics Documentation Documentation',
+    (master_doc, 'milkywayproteomics', u'MilkyWay Proteomics Documentation',
      [author], 1)
 ]
 
@@ -163,8 +163,8 @@ man_pages = [
 # (source start file, target name, title, author,
 #  dir menu entry, description, category)
 texinfo_documents = [
-    (master_doc, 'MilkyWayProteomicsDocumentation', u'MilkyWay Proteomics Documentation Documentation',
-     author, 'MilkyWayProteomicsDocumentation', 'One line description of project.',
+    (master_doc, 'MilkyWayProteomics', u'MilkyWay Proteomics Documentation',
+     author, 'MilkyWayProteomics', 'One line description of project.',
      'Miscellaneous'),
 ]
 

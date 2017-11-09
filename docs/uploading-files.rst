@@ -1,3 +1,6 @@
+Welcome to MilkyWay Proteomics documentation!
+=============================================================
+
 ############
 Uploading Files to MilkyWay
 ############
