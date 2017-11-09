@@ -11,6 +11,7 @@ Welcome to MilkyWay Proteomics documentation!
    :caption: Contents:
 
    uploading-files
+   workflow-execution
 
 
 Indices and tables

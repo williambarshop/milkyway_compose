@@ -1,8 +1,8 @@
-Uploading files to MilkyWay via the R/Shiny interface
+Workflow Execution in MilkyWay (Galaxy)
 =============================================================
 
 ############
-Accessing the MilkyWay R/Shiny interface
+Accessing the Workflows
 ############
 
 By default, the MilkyWay R/Shiny interface can be accessed at the same IP/hostname, on port :3838.
@@ -12,7 +12,7 @@ Once connected to the R/Shiny interface, the username and passwords are drawn fr
 For a fresh installation of the MilkyWay system, the default username is `admin@galaxy.org` and the default password is `admin`.
 
 ############
-Handling Multiple Concurrent Users on R/Shiny
+Workflow Choice
 ############
 
 Please keep in mind that since R/Shiny is naturally limited to a single thread by the Global Interpreter Lock (GIL), if multiple users attempt to use the R/Shiny interface concurrently they may have to wait for the others' calculations to finish before their own page will render.
@@ -21,7 +21,7 @@ To sidestep this issue, we provide an additional repository at `http://github.co
 For deployment of ShinyProxy, please follow the instructions provided in that repository.
 
 ############
-Uploading Files to MilkyWay
+Workflow Parameters and Execution
 ############
 
 File Upload for MilkyWay is handled through the dashboard's left tab "Galaxy Job Submitter".
