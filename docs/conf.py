@@ -170,3 +170,4 @@ texinfo_documents = [
 
 
 
+source_parsers={'.md': 'recommonmark.parser.CommonMarkParser'}
