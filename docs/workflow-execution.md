@@ -22,12 +22,12 @@ Workflow Choice
 Pick the right workflow for what data you've generated, and what question you are asking of your dataset!
 A basic interpretation of each workflow is provided below.
 
-#### No intensity based analysis:
+###### No intensity based analysis:
 * **Identification Analysis:** Use this if you are just searching one (or more) datasets to identify proteins/peptides. This will have no comparative statistics or intensity based analysis.
 * **Phospho Identification Analysis:** Use this if you are just searching one (or more) datasets to identify phospho proteins/peptides. This will have no comparative statistics or intensity based analysis, but DOES include PhosphoRS localization scoring algorithm.
 * **Qualitative Analysis:** This is the most basic comparative pipeline.  One can think of this as a "classic" proteomics pipeline, generating spectral counts, NSAF values, and SAINT enrichment probability scores.
 
-#### Intensity based analyses (these will still have SpC/NSAF calculations):
+###### Intensity based analyses (these will still have SpC/NSAF calculations):
 * **DDA HighRes:** Use this workflow to search a standard comparative analysis of DDA datasets.  Also use this workflow if you have non-highres data.  The workflow is named this way to ensure that users will adjust appropriately the settings necessary for their instrument, to provide proper tolerances for any MSn level where resolution may be high or low.
 * **phosphoRS:** Use this workflow to search a standard comparative analysis of DDA datasets which also contain phosphopeptides of interest.  This will be the same as the DDA workflow immediately above, but with the added localization calculations provided by PhosphoRS.
 * **DIAUmpire workflow:** Use this if you have only a DIA dataset, with regularly sized windows.
