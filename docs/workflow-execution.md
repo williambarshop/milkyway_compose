@@ -51,11 +51,11 @@ The images below should provide a basic expectation of what to visually expect w
 First, you must have finished uploading your dataset through the MilkyWay Job Submission (Upload) tool.  After this, the user must switch into the new history created via the Galaxy interface.
 Again, the galaxy interface can be accessed at `http://yourServerName/` by default (port 80, standard HTTP).
 
-* Once you have switched into your new history, you can move back to the Analysis section of Galaxy, at which point you should see [this view within galaxy](https://raw.githubusercontent.com/wohllab/milkyway_compose/master/docs/images/workflow_execution/uploaded_files_in_history_workflow_circle.PNG).
+* Once you have switched into your new history, you can move back to the Analysis section of Galaxy, at which point you should see [**this view within galaxy**](https://raw.githubusercontent.com/wohllab/milkyway_compose/master/docs/images/workflow_execution/uploaded_files_in_history_workflow_circle.PNG).
     - At this point, if all of your files for the analysis are present, you may click on the highlighted "Workflows" section of Galaxy at the top of the page.
 * The workflows section by default provides several different common analyses within MilkyWay.  These workflows can be copied, and tweaked to your hearts' content.  This is one of the beautiful aspects of Galaxy as a workflow management system.
-    - You should see [something like this list of workflows](https://raw.githubusercontent.com/wohllab/milkyway_compose/master/docs/images/workflow_execution/choose_workflow.PNG).
+    - You should see [**something like this list of workflows**](https://raw.githubusercontent.com/wohllab/milkyway_compose/master/docs/images/workflow_execution/choose_workflow.PNG).
 * At this point, you can click on the appropriate workflow of your choosing, and click "run" to begin setting up execution of the analysis.
-    - [Lastly, you must define the parameters for your analysis.  This, like most proteomics workflows, is an absolutely crucial step.](https://raw.githubusercontent.com/wohllab/milkyway_compose/master/docs/images/workflow_execution/parameters_and_input_files.PNG)
+    - [**Lastly, you must define the parameters for your analysis.  This, like most proteomics workflows, is an absolutely crucial step.**](https://raw.githubusercontent.com/wohllab/milkyway_compose/master/docs/images/workflow_execution/parameters_and_input_files.PNG)
     - It is exceptionally important that you set up the input files to the correct tools.  Experimental design file, FASTA database, Skyline File, and RAW file collections must be properly associated before workflow execution!
 * Finally, once your configuration for the analysis has been completed, click "Run Workflow" at the top of the page to execute, and await your results!
