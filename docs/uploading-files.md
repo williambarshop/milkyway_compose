@@ -11,7 +11,7 @@ For a fresh installation of the MilkyWay system, the default username is `admin@
 
 ###### Handling Multiple Concurrent Users on R/Shiny
 
-Please keep in mind that since R/Shiny is naturally limited to a single thread by the Global Interpreter Lock (GIL), if multiple users attempt to use the R/Shiny interface concurrently they may have to wait for the others' calculations to finish before their own page will render.
+Please keep in mind that since R/Shiny is naturally limited to a single thread.  If multiple users attempt to use the R/Shiny interface concurrently they may have to wait for the others' calculations to finish before their own page will render.
 
 To sidestep this issue, we provide an additional repository at [**http://github.com/wohllab/milkyway_shinyproxy**](http://github.com/wohllab/milkyway_shinyproxy) which allows users to sidestep this problem.
 For deployment of ShinyProxy, please follow the instructions provided in that repository.
