@@ -2,6 +2,7 @@ version: "3.2"
 
 services:
   milkyway-galaxy:
+#    image: wbarshop/milkyway_galaxy:54bbcc492011
     image: wbarshop/milkyway_galaxy:latest
     volumes:
       - galaxy_storage:/export/
@@ -45,7 +46,7 @@ services:
   
 
   milkyway-pulsar:
-    image: wbarshop/milkyway_pulsar:NumCores
+    image: wbarshop/milkyway_pulsar:latest
 #    volumes:
 #     - pulsar_storage:C:\pulsar\files\staging\
     networks:
