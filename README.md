@@ -141,11 +141,39 @@ Do the same for each linux server, and label it with ostype=linux as below... (y
 
 ### 6. Let's deploy our stack to the swarm!  Run the following command on the headnode.
 ```
-docker stack deploy --compose-file docker-stack.yml milkyway-stack
+docker stack deploy --compose-file milkyway-compose.yaml milkyway-stack
+```
+
+Alternatively, you can run the convenience script to start up the `milkyway-stack`, like so:
+```
+sh deploy_stack.sh
 ```
 
 At this point, you should be able to check on the running stack by
 
 ```
 docker stack ps
+```
+
+### 7. Small conveniences:
+To restart your stack, you can run the script:
+```
+sh restart-stack.sh
+```
+
+To completely delete your whole instance of galaxy, including analysis results and saved data, run the replacement script:
+```
+replace_stack.sh
+```
+
+To update your docker images, simply pull the images from the docker hub.
+On the linux host(s):
+```
+sudo docker pull wbarshop/milkyway_galaxy
+sudo docker pull wbarshop/milkyway_shiny
+```
+
+On the Windows host(s):
+```
+docker pull wbarshop/milkyway_pulsar
 ```
