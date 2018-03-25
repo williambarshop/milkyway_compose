@@ -80,6 +80,13 @@ New-NetFirewallRule -DisplayName “Docker Swarm 7946 TCP” -Direction Inbound 
 New-NetFirewallRule -DisplayName “Docker Swarm 7946 UDP” -Direction Inbound –Protocol UDP –LocalPort 7946 -Action allow
 New-NetFirewallRule -DisplayName “Docker Swarm 4789 UDP” -Direction Inbound –Protocol UDP –LocalPort 4789 -Action allow
 ```
+
+We will also need to make sure that the Windows docker host is set to run Windows containers, and not Linux, as is the default.
+To do this, please run the following command to switch from Linux to Windows (or vice versa).
+```
+& $Env:ProgramFiles\Docker\Docker\DockerCli.exe -SwitchDaemon
+```
+
 ### 3.  Let's actually start up a swarm!
 
 We will configure the Docker swarm mode to use the linux node as a manager, and the windows node as a worker.
