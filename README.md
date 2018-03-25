@@ -82,7 +82,8 @@ New-NetFirewallRule -DisplayName “Docker Swarm 4789 UDP” -Direction Inbound 
 ```
 
 We will also need to make sure that the Windows docker host is set to run Windows containers, and not Linux, as is the default.
-To do this, please run the following command to switch from Linux to Windows (or vice versa).
+To do this, please run the following command to switch from Linux to Windows (or vice versa).  In case of failure, please right click on the Docker icon in the bottom-right systray and click "Switch to Windows Containers".
+If your installation says "Switch to Linux Containers"-- don't click it-- you're already set up to run Windows Containers.
 ```
 & $Env:ProgramFiles\Docker\Docker\DockerCli.exe -SwitchDaemon
 ```
