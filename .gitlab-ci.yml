@@ -1,0 +1,17 @@
+stages:
+  - deploy
+
+deploy-to-swarm:
+  stage: deploy
+  variables:
+    DOCKER_HOST: tcp://milkyway.glitterband:2375
+    SERVICE_NAME: milkyway-stack
+  image: docker:latest
+  script:
+    - docker login -u "$REGISTRY_USER" -p "$REGISTRY_PASSWORD"
+    - docker stack deploy --with-registry-auth --compose-file=milkyway-compose.yaml ${CI_PROJECT_NAMESPACE}-${CI_PROJECT_NAME}-${SERVICE_NAME}
+  environment:
+    name: master
+    url: http://${CI_BUILD_REF_NAME}.milkyway/
+  only:
+    - master
