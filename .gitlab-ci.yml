@@ -4,7 +4,7 @@ stages:
 deploy-to-swarm:
   stage: deploy
   variables:
-    DOCKER_HOST: tcp://milkyway.glitterband:2375
+    DOCKER_HOST: tcp://milkyway:2375
     SERVICE_NAME: milkyway-stack
   image: docker:latest
   script:
