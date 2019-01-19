@@ -1,0 +1,232 @@
+version: "3.3"
+
+services:
+  milkyway-galaxy:
+    image: wbarshop/milkyway_galaxy:ci
+    volumes:
+      - galaxy_storage_ci:/export/
+    ports:
+#      - "80:80"
+      - "21:21"
+      - "8800:8800"
+      - "9002:9002"
+    networks:
+        milkynet:
+            aliases:
+                - milkyway-galaxy
+    environment:
+        - GALAXY_CONFIG_ADMIN_USERS=admin@galaxy.org
+        - GALAXY_CONFIG_MASTER_API_KEY=37430b18a3e4610ea243c316b293d06f
+        - GALAXY_CONFIG_REQUIRE_LOGIN=True
+        - GALAXY_CONFIG_HOST='0.0.0.0'
+#        - GALAXY_DESTINATIONS_DEFAULT=local
+        - GALAXY_LOGGING=full
+        - GALAXY_DOCKER_ENABLED=True
+#        - NONUSE=slurmd,slurmctld
+    deploy:
+      placement:
+        constraints: [node.labels.ostype != windows]
+      labels:
+        - "traefik.enable=true"
+        - "traefik.milkyway.frontend.rule=Host:milkyway.localhost"
+#        - "traefik.milkyway.backend=milkyway"
+        - "traefik.port=80"
+        - "traefik.docker.network=milkynet"
+        - "traefik.protocol=http"
+        - "traefik.frontend.entryPoints=http"
+      restart_policy:
+        condition: on-failure
+        delay: 30s
+        max_attempts: 6
+        window: 240s
+      update_config:
+        parallelism: 1
+        delay: 10s
+        failure_action: continue
+        monitor: 60s
+        max_failure_ratio: 0.3
+  
+
+  milkyway-pulsar:
+    image: wbarshop/milkyway_pulsar:dev
+#    volumes:
+#     - pulsar_storage:C:\pulsar\files\staging\
+    networks:
+        milkynet:
+            aliases:
+                - milkyway-pulsar
+    deploy:
+      placement:
+        constraints: [node.labels.ostype == windows]
+#            - engine.labels.operatingsystem==windows
+      restart_policy:
+        condition: on-failure
+        delay: 30s
+        max_attempts: 6
+        window: 240s
+      # service update configuration
+      update_config:
+        parallelism: 1
+        delay: 10s
+        failure_action: continue
+        monitor: 60s
+        max_failure_ratio: 0.3
+        
+  milkyway-shiny:
+    image: wbarshop/milkyway_shiny:dev
+#    ports:
+#      - "3839:3838"
+    networks:
+        milkynet:
+            aliases:
+                - milkyway-shiny
+    deploy:
+      labels:
+        - "traefik.enable=true"
+        - "traefik.shiny.frontend.rule=Host:shiny.localhost"
+#        - "traefik.backend=milkyway-shiny"
+        - "traefik.port=3838"
+        - "traefik.docker.network=milkynet"
+        - "traefik.protocol=http"
+        - "traefik.frontend.entryPoints=http"
+
+      replicas: 1
+      placement:
+        constraints: [node.labels.ostype != windows]
+      restart_policy:
+        condition: on-failure
+        delay: 30s
+        max_attempts: 6
+        window: 240s
+      # service update configuration
+      update_config:
+        parallelism: 1
+        delay: 10s
+        failure_action: continue
+        monitor: 60s
+        max_failure_ratio: 0.3
+
+
+  traefik:
+    image: traefik:latest
+    command: --web --docker --docker.domain=docker.localhost --docker.swarmmode --docker.watch --logLevel=DEBUG
+    deploy:
+      replicas: 1
+      placement:
+        constraints:
+          - node.labels.ostype != windows
+          - node.role == manager
+      restart_policy:
+        condition: on-failure
+        delay: 10s
+        max_attempts: 6
+        window: 240s
+    ports:
+      - 80:80
+      - 8080:8080
+    networks:
+        milkynet:
+            aliases:
+                - milkyway-traefik
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /dev/null:/traefik.toml
+#    configs:
+#      - source: traefik-config
+#        target: /etc/traefik/traefik.toml
+
+#      - ./traefik.toml:/traefik.toml
+#      - ${TRAEFIK_TOML_FILE:-./traefik.dev.toml}:/traefik.toml
+#      - ${ACME_JSON:-./acme.json}:/acme.json
+#    container_name: traefik
+
+
+
+
+
+
+
+
+#  milkyway-smb:
+#    image: brispark/smb:latest
+#    ports:
+#      - "137:137"
+#      - "138:138"
+#      - "139:139"
+#      - "445:445"
+#    volumes:
+#      - smb_storage:/home/app
+#    networks:
+#        milkynet:
+#            aliases:
+#                - milkyway-smb
+
+#    deploy:
+#      placement:
+#        constraints: [node.labels.ostype != windows]
+#      restart_policy:
+#        condition: on-failure
+#        delay: 30s
+#        max_attempts: 6
+#        window: 240s
+#      # service update configuration
+#      update_config:
+#        parallelism: 1
+#        delay: 10s
+#        failure_action: continue
+#        monitor: 60s
+#        max_failure_ratio: 0.3
+
+
+##### NOTE: Unfortunately, shinyproxy docker-in-docker won't work on swarm.  Docker-in-docker requires privileged session, which isn't supported on swarm.  But... you can still run it separately, if you want!
+#  milkyway-shinyproxy:
+#    image: wbarshop/milkyway_shinyproxy:dev
+#    ports:
+#      - "8080:8080"
+#    volumes:
+#      - /var/run/docker.sock:/var/run/docker.sock
+#    networks:
+#        milkynet:
+#            aliases:
+#                - milkyway-shinyproxy
+#    deploy:
+#      placement:
+#        constraints: [node.labels.ostype != windows]
+#      restart_policy:
+#        condition: on-failure
+#        delay: 30s
+#        max_attempts: 6
+#        window: 240s
+#      # service update configuration
+#      update_config:
+#        parallelism: 1
+#        delay: 10s
+#        failure_action: continue
+#        monitor: 60s
+#        max_failure_ratio: 0.3
+
+networks:
+    milkynet:
+        driver: overlay
+        attachable: true
+        ipam:
+            driver: default
+            config:
+                - subnet: 172.28.0.0/16
+#        internal: true
+
+#    external:
+#        driver: bridge
+
+volumes:
+    galaxy_storage_ci:
+#    smb_storage:
+#    galaxy_storage:
+#        driver:local
+#        driver_opts:
+#            type: nfs
+#        - galaxy_storage/:/export/
+
+configs:
+    traefik-config:
+      file: traefik.toml
