@@ -1,4 +1,4 @@
-sudo docker stack rm milkyway-stack && \
+sudo docker stack rm milkyway-stack-ci && \
 sleep 45 && \
 sh remove_volume.sh && \
 sleep 5 && \

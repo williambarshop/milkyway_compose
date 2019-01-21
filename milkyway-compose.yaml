@@ -3,9 +3,9 @@ version: "3.2"
 services:
   milkyway-galaxy:
 #    image: wbarshop/milkyway_galaxy:54bbcc492011
-    image: wbarshop/milkyway_galaxy:latest
+    image: wbarshop/milkyway_galaxy:ci
     volumes:
-      - galaxy_storage:/export/
+      - galaxy_storage_ci:/export/
     ports:
       - "80:80"
       - "21:21"
@@ -23,10 +23,10 @@ services:
         - GALAXY_CONFIG_MASTER_API_KEY=37430b18a3e4610ea243c316b293d06f
         - GALAXY_CONFIG_REQUIRE_LOGIN=True
         - GALAXY_CONFIG_HOST='0.0.0.0'
-        - GALAXY_DESTINATIONS_DEFAULT=local
+#        - GALAXY_DESTINATIONS_DEFAULT=local
         - GALAXY_LOGGING=full
         - GALAXY_DOCKER_ENABLED=True
-        - NONUSE=slurmd,slurmctld
+#        - NONUSE=slurmd,slurmctld
     deploy:
       placement:
         constraints: [node.labels.ostype != windows]
@@ -46,7 +46,7 @@ services:
   
 
   milkyway-pulsar:
-    image: wbarshop/milkyway_pulsar:latest
+    image: wbarshop/milkyway_pulsar:dev
 #    volumes:
 #     - pulsar_storage:C:\pulsar\files\staging\
     networks:
@@ -71,9 +71,9 @@ services:
         max_failure_ratio: 0.3
         
   milkyway-shiny:
-    image: wbarshop/milkyway_shiny
+    image: wbarshop/milkyway_shiny:dev
     ports:
-      - "3838:3838"
+      - "8080:3838"
     networks:
         milkynet:
             aliases:
@@ -95,6 +95,31 @@ services:
         monitor: 60s
         max_failure_ratio: 0.3
 
+  milkyway-shinyproxy:
+    image: wbarshop/milkyway_shinyproxy:latest
+    ports:
+      - "3838:8080"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    networks:
+        milkynet:
+            aliases:
+                - milkyway-shinyproxy
+    deploy:
+      placement:
+        constraints: [node.labels.ostype != windows]
+      restart_policy:
+        condition: on-failure
+        delay: 30s
+        max_attempts: 6
+        window: 240s
+      # service update configuration
+      update_config:
+        parallelism: 1
+        delay: 10s
+        failure_action: continue
+        monitor: 60s
+        max_failure_ratio: 0.3
 
 #  milkyway-smb:
 #    image: brispark/smb:latest
@@ -127,33 +152,6 @@ services:
 #        max_failure_ratio: 0.3
 
 
-##### NOTE: Unfortunately, shinyproxy docker-in-docker won't work on swarm.  Docker-in-docker requires privileged session, which isn't supported on swarm.  But... you can still run it separately, if you want!
-#  milkyway-shinyproxy:
-#    image: wbarshop/milkyway_shinyproxy:dev
-#    ports:
-#      - "8080:8080"
-#    volumes:
-#      - /var/run/docker.sock:/var/run/docker.sock
-#    networks:
-#        milkynet:
-#            aliases:
-#                - milkyway-shinyproxy
-#    deploy:
-#      placement:
-#        constraints: [node.labels.ostype != windows]
-#      restart_policy:
-#        condition: on-failure
-#        delay: 30s
-#        max_attempts: 6
-#        window: 240s
-#      # service update configuration
-#      update_config:
-#        parallelism: 1
-#        delay: 10s
-#        failure_action: continue
-#        monitor: 60s
-#        max_failure_ratio: 0.3
-
 networks:
     milkynet:
         driver: overlay
@@ -168,14 +166,10 @@ networks:
 #        driver: bridge
 
 volumes:
-    galaxy_storage:
+    galaxy_storage_ci:
 #    smb_storage:
 #    galaxy_storage:
 #        driver:local
 #        driver_opts:
 #            type: nfs
-#        - galaxy_storage/:/export/           
-
-
-
-
+#        - galaxy_storage/:/export/
