@@ -87,7 +87,7 @@ services:
     deploy:
       labels:
         - "traefik.enable=true"
-        - "traefik.shiny.frontend.rule=PathPrefixStrip:/shiny"
+        - "traefik.shiny.frontend.rule=PathPrefixStrip:/shinybackup"
         - "traefik.shiny.frontend.priority=15"
 #        - "traefik.shiny.frontend.rule=Host:shiny.milkyway"
 #        - "traefik.backend=milkyway-shiny"
@@ -123,9 +123,10 @@ services:
     deploy:
       labels:
         - "traefik.enable=true"
+        - "traefik.shinyproxy.frontend.rule=PathPrefixStrip:/shiny"
+        - "traefik.shinyproxy.frontend.priority=25"
         - "traefik.shinyproxybase.frontend.rule=PathPrefix:/"
         - "traefik.shinyproxybase.frontend.priority=5"
-#        - "traefik.shinyproxy.frontend.rule=PathPrefixStrip:/;AddPrefix:/app/milkyway"
 #        - "traefik.shinyproxy.frontend.rule=AddPrefix:/app/milkyway"
 #        - "traefik.shiny.frontend.rule=Host:shiny.milkyway"
 #        - "traefik.backend=milkyway-shiny"
