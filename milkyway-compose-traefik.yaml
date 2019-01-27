@@ -2,7 +2,7 @@ version: "3.3"
 
 services:
   milkyway-galaxy:
-    image: bgruening/galaxy-stable:dev
+    image: bgruening/galaxy-stable:18.05
 #    image: wbarshop/milkyway_galaxy:ci
 #    volumes:
 #      - galaxy_storage_ci:/export/
@@ -112,8 +112,6 @@ services:
 
   milkyway-shinyproxy:
     image: wbarshop/milkyway_shinyproxy:latest
-    ports:
-      - "3838:8080"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     networks:
@@ -123,11 +121,11 @@ services:
     deploy:
       labels:
         - "traefik.enable=true"
-        - "traefik.shinyproxy.frontend.rule=PathPrefixStrip:/shinyproxy"
-        - "traefik.shinyproxy.frontend.rule=Path:/"
+#        - "traefik.shinyproxy.frontend.rule=PathPrefix:/shinyproxy"
+        - "traefik.shinyproxybase.frontend.rule=PathPrefix:/"
 #        - "traefik.shiny.frontend.rule=Host:shiny.milkyway"
 #        - "traefik.backend=milkyway-shiny"
-        - "traefik.port=3838"
+        - "traefik.port=8080"
         - "traefik.docker.network=milkyway-stack-ci_milkynet"
         - "traefik.protocol=http"
         - "traefik.frontend.entryPoints=http"
