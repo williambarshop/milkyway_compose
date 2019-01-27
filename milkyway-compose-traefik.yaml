@@ -2,13 +2,14 @@ version: "3.3"
 
 services:
   milkyway-galaxy:
-    image: wbarshop/milkyway_galaxy:ci
-    volumes:
-      - galaxy_storage_ci:/export/
+    image: bgruening/galaxy-stable:dev
+#    image: wbarshop/milkyway_galaxy:ci
+#    volumes:
+#      - galaxy_storage_ci:/export/
     ports:
 #      - "80:80"
       - "21:21"
-      - "8800:8800"
+#      - "8800:8800"
       - "9002:9002"
     networks:
         milkynet:
@@ -22,16 +23,18 @@ services:
 #        - GALAXY_DESTINATIONS_DEFAULT=local
         - GALAXY_LOGGING=full
         - GALAXY_DOCKER_ENABLED=True
+        - PROXY_PREFIX=/galaxy
 #        - NONUSE=slurmd,slurmctld
     deploy:
       placement:
         constraints: [node.labels.ostype != windows]
       labels:
         - "traefik.enable=true"
-        - "traefik.milkyway.frontend.rule=Host:milkyway.localhost"
+        - "traefik.milkyway.frontend.rule=PathPrefixStrip:/galaxy"
+#        - "traefik.milkyway.frontend.rule=Host:milkyway.milkyway"
 #        - "traefik.milkyway.backend=milkyway"
         - "traefik.port=80"
-        - "traefik.docker.network=milkynet"
+        - "traefik.docker.network=milkyway-stack-ci_milkynet"
         - "traefik.protocol=http"
         - "traefik.frontend.entryPoints=http"
       restart_policy:
@@ -83,10 +86,11 @@ services:
     deploy:
       labels:
         - "traefik.enable=true"
-        - "traefik.shiny.frontend.rule=Host:shiny.localhost"
+        - "traefik.shiny.frontend.rule=PathPrefixStrip:/shiny"
+#        - "traefik.shiny.frontend.rule=Host:shiny.milkyway"
 #        - "traefik.backend=milkyway-shiny"
         - "traefik.port=3838"
-        - "traefik.docker.network=milkynet"
+        - "traefik.docker.network=milkyway-stack-ci_milkynet"
         - "traefik.protocol=http"
         - "traefik.frontend.entryPoints=http"
 
@@ -106,10 +110,47 @@ services:
         monitor: 60s
         max_failure_ratio: 0.3
 
+  milkyway-shinyproxy:
+    image: wbarshop/milkyway_shinyproxy:latest
+    ports:
+      - "3838:8080"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    networks:
+        milkynet:
+            aliases:
+                - milkyway-shinyproxy
+    deploy:
+      labels:
+        - "traefik.enable=true"
+        - "traefik.shinyproxy.frontend.rule=PathPrefixStrip:/shinyproxy"
+        - "traefik.shinyproxy.frontend.rule=Path:/"
+#        - "traefik.shiny.frontend.rule=Host:shiny.milkyway"
+#        - "traefik.backend=milkyway-shiny"
+        - "traefik.port=3838"
+        - "traefik.docker.network=milkyway-stack-ci_milkynet"
+        - "traefik.protocol=http"
+        - "traefik.frontend.entryPoints=http"
+      placement:
+        constraints: [node.labels.ostype != windows]
+      restart_policy:
+        condition: on-failure
+        delay: 30s
+        max_attempts: 6
+        window: 240s
+      # service update configuration
+      update_config:
+        parallelism: 1
+        delay: 10s
+        failure_action: continue
+        monitor: 60s
+        max_failure_ratio: 0.3
+
+
 
   traefik:
     image: traefik:latest
-    command: --web --docker --docker.domain=docker.localhost --docker.swarmmode --docker.watch --logLevel=DEBUG
+    command: --web --docker --docker.swarmmode --docker.watch --logLevel=DEBUG
     deploy:
       replicas: 1
       placement:
@@ -122,8 +163,8 @@ services:
         max_attempts: 6
         window: 240s
     ports:
-      - 80:80
       - 8080:8080
+      - 80:80
     networks:
         milkynet:
             aliases:
@@ -213,20 +254,10 @@ networks:
             driver: default
             config:
                 - subnet: 172.28.0.0/16
-#        internal: true
-
-#    external:
-#        driver: bridge
 
 volumes:
     galaxy_storage_ci:
-#    smb_storage:
-#    galaxy_storage:
-#        driver:local
-#        driver_opts:
-#            type: nfs
-#        - galaxy_storage/:/export/
 
-configs:
-    traefik-config:
-      file: traefik.toml
+#configs:
+#    traefik-config:
+#      file: traefik.toml
