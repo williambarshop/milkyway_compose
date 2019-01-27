@@ -31,6 +31,7 @@ services:
       labels:
         - "traefik.enable=true"
         - "traefik.milkyway.frontend.rule=PathPrefixStrip:/galaxy"
+        - "traefik.milkyway.frontend.priority=20"
 #        - "traefik.milkyway.frontend.rule=Host:milkyway.milkyway"
 #        - "traefik.milkyway.backend=milkyway"
         - "traefik.port=80"
@@ -87,6 +88,7 @@ services:
       labels:
         - "traefik.enable=true"
         - "traefik.shiny.frontend.rule=PathPrefixStrip:/shiny"
+        - "traefik.shiny.frontend.priority=15"
 #        - "traefik.shiny.frontend.rule=Host:shiny.milkyway"
 #        - "traefik.backend=milkyway-shiny"
         - "traefik.port=3838"
@@ -121,8 +123,10 @@ services:
     deploy:
       labels:
         - "traefik.enable=true"
-#        - "traefik.shinyproxy.frontend.rule=PathPrefix:/shinyproxy"
         - "traefik.shinyproxybase.frontend.rule=PathPrefix:/"
+        - "traefik.shinyproxybase.frontend.priority=5"
+#        - "traefik.shinyproxy.frontend.rule=PathPrefixStrip:/;AddPrefix:/app/milkyway"
+#        - "traefik.shinyproxy.frontend.rule=AddPrefix:/app/milkyway"
 #        - "traefik.shiny.frontend.rule=Host:shiny.milkyway"
 #        - "traefik.backend=milkyway-shiny"
         - "traefik.port=8080"
