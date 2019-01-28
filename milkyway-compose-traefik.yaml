@@ -126,13 +126,8 @@ services:
     deploy:
       labels:
         - "traefik.enable=true"
-#        - "traefik.frontend.rule=PathPrefixStrip:/shinyproxy"
-#        - "traefik.shinyproxy.frontend.rule=AddPrefix:/app/milkyway"
-#        - "traefik.frontend.priority=25"
         - "traefik.shinyproxybase.frontend.rule=PathPrefix:/,/app"
         - "traefik.shinyproxybase.frontend.priority=5"
-#        - "traefik.shiny.frontend.rule=Host:shiny.milkyway"
-#        - "traefik.backend=milkyway-shiny"
         - "traefik.port=8080"
         - "traefik.docker.network=milkyway-stack-ci_milkynet"
         - "traefik.protocol=http"
