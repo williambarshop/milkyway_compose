@@ -2,12 +2,11 @@ version: "3.3"
 
 services:
   milkyway-galaxy:
-    image: bgruening/galaxy-stable:18.05
-#    image: wbarshop/milkyway_galaxy:ci
-#    volumes:
-#      - galaxy_storage_ci:/export/
+#    image: bgruening/galaxy-stable:18.05
+    image: wbarshop/milkyway_galaxy:ci
+    volumes:
+      - galaxy_storage_ci:/export/
     ports:
-#      - "80:80"
       - "21:21"
 #      - "8800:8800"
       - "9002:9002"
@@ -27,10 +26,11 @@ services:
 #        - NONUSE=slurmd,slurmctld
     deploy:
       placement:
-        constraints: [node.labels.ostype != windows]
+#        constraints: [node.labels.ostype != windows]
+        constraints: [node.platform.os == linux]
       labels:
         - "traefik.enable=true"
-        - "traefik.milkyway.frontend.rule=PathPrefixStrip:/galaxy"
+        - "traefik.milkyway.frontend.rule=PathPrefix:/galaxy"
         - "traefik.milkyway.frontend.priority=20"
 #        - "traefik.milkyway.frontend.rule=Host:milkyway.milkyway"
 #        - "traefik.milkyway.backend=milkyway"
@@ -61,7 +61,8 @@ services:
                 - milkyway-pulsar
     deploy:
       placement:
-        constraints: [node.labels.ostype == windows]
+        constraints: [node.platform.os == windows]
+#        constraints: [node.labels.ostype == windows]
 #            - engine.labels.operatingsystem==windows
       restart_policy:
         condition: on-failure
@@ -87,8 +88,9 @@ services:
     deploy:
       labels:
         - "traefik.enable=true"
-        - "traefik.shiny.frontend.rule=PathPrefixStrip:/shinybackup"
+        - "traefik.shiny.frontend.rule=PathPrefixStrip:/shiny"
         - "traefik.shiny.frontend.priority=15"
+        - "traefik.backend.loadbalancer.stickiness=true"
 #        - "traefik.shiny.frontend.rule=Host:shiny.milkyway"
 #        - "traefik.backend=milkyway-shiny"
         - "traefik.port=3838"
@@ -96,9 +98,10 @@ services:
         - "traefik.protocol=http"
         - "traefik.frontend.entryPoints=http"
 
-      replicas: 1
+      replicas: 5
       placement:
-        constraints: [node.labels.ostype != windows]
+        constraints: [node.platform.os == linux]
+#        constraints: [node.labels.ostype != windows]
       restart_policy:
         condition: on-failure
         delay: 30s
@@ -113,7 +116,7 @@ services:
         max_failure_ratio: 0.3
 
   milkyway-shinyproxy:
-    image: wbarshop/milkyway_shinyproxy:latest
+    image: wbarshop/milkyway_shinyproxy:dev
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     networks:
@@ -123,11 +126,11 @@ services:
     deploy:
       labels:
         - "traefik.enable=true"
-        - "traefik.shinyproxy.frontend.rule=PathPrefixStrip:/shiny"
-        - "traefik.shinyproxy.frontend.priority=25"
-        - "traefik.shinyproxybase.frontend.rule=PathPrefix:/"
-        - "traefik.shinyproxybase.frontend.priority=5"
+#        - "traefik.frontend.rule=PathPrefixStrip:/shinyproxy"
 #        - "traefik.shinyproxy.frontend.rule=AddPrefix:/app/milkyway"
+#        - "traefik.frontend.priority=25"
+        - "traefik.shinyproxybase.frontend.rule=PathPrefix:/,/app"
+        - "traefik.shinyproxybase.frontend.priority=5"
 #        - "traefik.shiny.frontend.rule=Host:shiny.milkyway"
 #        - "traefik.backend=milkyway-shiny"
         - "traefik.port=8080"
@@ -135,7 +138,8 @@ services:
         - "traefik.protocol=http"
         - "traefik.frontend.entryPoints=http"
       placement:
-        constraints: [node.labels.ostype != windows]
+        constraints: [node.platform.os == linux]
+#        constraints: [node.labels.ostype != windows]
       restart_policy:
         condition: on-failure
         delay: 30s
@@ -158,7 +162,8 @@ services:
       replicas: 1
       placement:
         constraints:
-          - node.labels.ostype != windows
+          - node.platform.os == linux
+#          - node.labels.ostype != windows
           - node.role == manager
       restart_policy:
         condition: on-failure
@@ -205,34 +210,6 @@ services:
 #            aliases:
 #                - milkyway-smb
 
-#    deploy:
-#      placement:
-#        constraints: [node.labels.ostype != windows]
-#      restart_policy:
-#        condition: on-failure
-#        delay: 30s
-#        max_attempts: 6
-#        window: 240s
-#      # service update configuration
-#      update_config:
-#        parallelism: 1
-#        delay: 10s
-#        failure_action: continue
-#        monitor: 60s
-#        max_failure_ratio: 0.3
-
-
-##### NOTE: Unfortunately, shinyproxy docker-in-docker won't work on swarm.  Docker-in-docker requires privileged session, which isn't supported on swarm.  But... you can still run it separately, if you want!
-#  milkyway-shinyproxy:
-#    image: wbarshop/milkyway_shinyproxy:dev
-#    ports:
-#      - "8080:8080"
-#    volumes:
-#      - /var/run/docker.sock:/var/run/docker.sock
-#    networks:
-#        milkynet:
-#            aliases:
-#                - milkyway-shinyproxy
 #    deploy:
 #      placement:
 #        constraints: [node.labels.ostype != windows]
