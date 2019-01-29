@@ -21,8 +21,8 @@ services:
         - GALAXY_CONFIG_HOST='0.0.0.0'
 #        - GALAXY_DESTINATIONS_DEFAULT=local
         - GALAXY_LOGGING=full
-        - GALAXY_DOCKER_ENABLED=True
-        - PROXY_PREFIX=/galaxy
+#        - GALAXY_DOCKER_ENABLED=True
+#        - PROXY_PREFIX=/galaxy
 #        - NONUSE=slurmd,slurmctld
     deploy:
       placement:
@@ -30,8 +30,8 @@ services:
         constraints: [node.platform.os == linux]
       labels:
         - "traefik.enable=true"
-        - "traefik.milkyway.frontend.rule=PathPrefix:/galaxy"
-        - "traefik.milkyway.frontend.priority=20"
+        - "traefik.milkyway.frontend.rule=PathPrefix:/"
+        - "traefik.milkyway.frontend.priority=1"
 #        - "traefik.milkyway.frontend.rule=Host:milkyway.milkyway"
 #        - "traefik.milkyway.backend=milkyway"
         - "traefik.port=80"
@@ -88,7 +88,7 @@ services:
     deploy:
       labels:
         - "traefik.enable=true"
-        - "traefik.shiny.frontend.rule=PathPrefixStrip:/shiny"
+        - "traefik.shiny.frontend.rule=PathPrefixStrip:/shinybackup"
         - "traefik.shiny.frontend.priority=15"
         - "traefik.backend.loadbalancer.stickiness=true"
 #        - "traefik.shiny.frontend.rule=Host:shiny.milkyway"
@@ -116,7 +116,7 @@ services:
         max_failure_ratio: 0.3
 
   milkyway-shinyproxy:
-    image: wbarshop/milkyway_shinyproxy:dev
+    image: wbarshop/milkyway_shinyproxy:ci
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     networks:
@@ -126,8 +126,8 @@ services:
     deploy:
       labels:
         - "traefik.enable=true"
-        - "traefik.shinyproxybase.frontend.rule=PathPrefix:/,/app"
-        - "traefik.shinyproxybase.frontend.priority=5"
+        - "traefik.shinyproxy.frontend.rule=PathPrefix:/shiny"
+        - "traefik.shinyproxy.frontend.priority=5"
         - "traefik.port=8080"
         - "traefik.docker.network=milkyway-stack-ci_milkynet"
         - "traefik.protocol=http"
