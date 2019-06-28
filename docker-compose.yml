@@ -152,7 +152,8 @@ services:
 
 
   galaxy-htcondor-executor:
-    image: quay.io/bgruening/galaxy-htcondor-executor:${TAG:-latest}
+    #image: quay.io/bgruening/galaxy-htcondor-executor:${TAG:-latest}
+    image: wbarshop/milkyway_galaxy_executor:ci
     # privileged is needed to run Docker jobs, moreover HTCondor wants
     # a RW cgroups mount. A RO cgroups mount throws an error in ProcD for running jobs.
     privileged: True
@@ -177,7 +178,8 @@ services:
 
 
   galaxy-htcondor-executor-big:
-    image: quay.io/bgruening/galaxy-htcondor-executor:${TAG:-latest}
+    #image: quay.io/bgruening/galaxy-htcondor-executor:${TAG:-latest}
+    image: wbarshop/milkyway_galaxy_executor:ci
     # privileged is needed to run Docker jobs, moreover HTCondor wants
     # a RW cgroups mount. A RO cgroups mount throws an error in ProcD for running jobs.
     privileged: True
@@ -263,7 +265,8 @@ services:
   # This container provides the galaxy uwsgi webhandlers, job handlers, nginx
   galaxy-web:
     # build: galaxy-web
-    image: quay.io/bgruening/galaxy-web:${TAG:-latest}
+    #image: quay.io/bgruening/galaxy-web:${TAG:-latest}
+    image: wbarshop/milkyway_galaxy_web:ci
     env_file: .env
     environment:
         # In case the galaxy-init container is not used, you need to include "sleeplock" to NONUSE
