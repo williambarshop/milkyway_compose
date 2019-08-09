@@ -35,7 +35,7 @@ services:
 #        - "traefik.milkyway.frontend.rule=Host:milkyway.milkyway"
 #        - "traefik.milkyway.backend=milkyway"
         - "traefik.port=80"
-        - "traefik.docker.network=milkyway-stack-ci_milkynet"
+        - "traefik.docker.network=milkyway-stack_milkynet"
         - "traefik.protocol=http"
         - "traefik.frontend.entryPoints=http"
       restart_policy:
@@ -94,7 +94,7 @@ services:
 #        - "traefik.shiny.frontend.rule=Host:shiny.milkyway"
 #        - "traefik.backend=milkyway-shiny"
         - "traefik.port=3838"
-        - "traefik.docker.network=milkyway-stack-ci_milkynet"
+        - "traefik.docker.network=milkyway-stack_milkynet"
         - "traefik.protocol=http"
         - "traefik.frontend.entryPoints=http"
 
@@ -129,7 +129,7 @@ services:
         - "traefik.shinyproxy.frontend.rule=PathPrefix:/shiny"
         - "traefik.shinyproxy.frontend.priority=5"
         - "traefik.port=8080"
-        - "traefik.docker.network=milkyway-stack-ci_milkynet"
+        - "traefik.docker.network=milkyway-stack_milkynet"
         - "traefik.protocol=http"
         - "traefik.frontend.entryPoints=http"
       placement:
