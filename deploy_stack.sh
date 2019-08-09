@@ -1,1 +1,1 @@
-sudo docker stack deploy --compose-file milkyway-compose.yaml milkyway-stack-ci
+sudo docker stack deploy --compose-file milkyway-compose-traefik.yaml milkyway-stack

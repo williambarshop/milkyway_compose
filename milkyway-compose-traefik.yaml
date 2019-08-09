@@ -5,7 +5,7 @@ services:
 #    image: bgruening/galaxy-stable:18.05
     image: wbarshop/milkyway_galaxy:ci
     volumes:
-      - galaxy_storage_ci:/export/
+      - galaxy_storage:/export/
     ports:
       - "21:21"
 #      - "8800:8800"
@@ -231,7 +231,7 @@ networks:
                 - subnet: 172.28.0.0/16
 
 volumes:
-    galaxy_storage_ci:
+    galaxy_storage:
 
 #configs:
 #    traefik-config:
