@@ -151,7 +151,7 @@ services:
 
 
   traefik:
-    image: traefik:latest
+    image: traefik:v1.7.24
     command: --web --docker --docker.swarmmode --docker.watch --logLevel=DEBUG
     deploy:
       replicas: 1
