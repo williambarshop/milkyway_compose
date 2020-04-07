@@ -3,7 +3,7 @@ version: "3.3"
 services:
   milkyway-galaxy:
 #    image: bgruening/galaxy-stable:18.05
-    image: wbarshop/milkyway_galaxy:ci
+    image: wbarshop/milkyway_galaxy:linux
     volumes:
       - galaxy_storage:/export/
     ports:
@@ -52,7 +52,7 @@ services:
   
 
   milkyway-pulsar:
-    image: wbarshop/milkyway_pulsar:dev
+    image: wbarshop/milkyway_pulsar:linux
 #    volumes:
 #     - pulsar_storage:C:\pulsar\files\staging\
     networks:
@@ -61,7 +61,7 @@ services:
                 - milkyway-pulsar
     deploy:
       placement:
-        constraints: [node.platform.os == windows]
+        constraints: [node.platform.os == linux]
 #        constraints: [node.labels.ostype == windows]
 #            - engine.labels.operatingsystem==windows
       restart_policy:
